@@ -11,8 +11,8 @@
             {!! Form::model($task, ['route' => 'tasks.store']) !!}
             
                 <div class="form-group">
-                    {!! Form::label('title', 'status:') !!}
-                    {!! Form::text('title', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('status', 'status:') !!}
+                    {!! Form::text('status', null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
                     {!! Form::label('content', 'タスク:') !!}
