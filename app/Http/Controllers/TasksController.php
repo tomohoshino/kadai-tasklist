@@ -30,6 +30,7 @@ class TasksController extends Controller
      */
     public function create()
     {
+        
         $task = new Task;
 
         // メッセージ作成ビューを表示
@@ -46,7 +47,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'content' => 'required|max:255',
+            'title' => 'required|max:10',
+        ]);
+        
         $task = new Task;
+        $task->title = $request->title;    // 追加
         $task->content = $request->content;
         $task->save();
 
@@ -98,8 +105,15 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        $request->validate([
+            'content' => 'required|max:255',
+            'title' => 'required|max:10',
+        ]);
+        
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
+        $task->title = $request->title;
         $task->content = $request->content;
         $task->save();
 
