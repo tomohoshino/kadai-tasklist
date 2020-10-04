@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Task;
+use App\User;
 
 class TasksController extends Controller
 {
@@ -15,12 +16,17 @@ class TasksController extends Controller
      */
     public function index()
     {
+        if (\Auth::check() ) {
         //ここにタスクの一覧表示
-         $tasks = Task::all();
-         
+           // $tasks = Task::where('id', 'desc')->paginate(10);;
+           $tasks = Task::orderBy('id', 'desc')->paginate(10);
          return view('tasks.index', [
             'tasks' => $tasks,
          ]);
+         
+        } else {
+             return view('welcome');
+        }
     }
     
     /**
@@ -56,6 +62,7 @@ class TasksController extends Controller
         $task = new Task;
         $task->status = $request->status;    // 追加
         $task->content = $request->content;
+        $task->user_id = $request->user()->id;
         $task->save();
 
         // トップページへリダイレクトさせる
