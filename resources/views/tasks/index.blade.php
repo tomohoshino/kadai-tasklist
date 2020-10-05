@@ -11,6 +11,7 @@
             <thead>
                 <tr>
                     <th>id</th>
+                    <th>user_id</th>
                     <th>status</th>
                     <th>タスク</th>
                 </tr>
@@ -20,7 +21,8 @@
                 <tr>
         
                     <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
-                    <td>{{ $task->status}}</td>
+                    <td>{{ $task->user_id }}</td>
+                    <td>{{ $task->status }}</td>
                     <td>{{ $task->content }}</td>
                 
                 </tr>

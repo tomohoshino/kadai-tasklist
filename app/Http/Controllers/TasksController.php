@@ -60,6 +60,7 @@ class TasksController extends Controller
         ]);
         
         $task = new Task;
+        $task->user_id = $request->user_id; //L15
         $task->status = $request->status;    // 追加
         $task->content = $request->content;
         $task->user_id = $request->user()->id;
@@ -80,11 +81,19 @@ class TasksController extends Controller
         //
          // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
-
-        // メッセージ詳細ビューでそれを表示
-        return view('tasks.show', [
-            'task' => $task,
+        
+        //見るユーザのIDとタスクのIDの一致判定
+        if (\Auth::id() === $task->user_id) {
+            // メッセージ詳細ビューでそれを表示
+            return view('tasks.show', [
+                'task' => $task,
              ]);
+        } else {
+            $tasks = Task::orderBy('id', 'desc')->paginate(10);
+            return view('tasks.index', [
+            'tasks' => $tasks,
+            ]);
+        }
     }
 
     /**
@@ -122,6 +131,8 @@ class TasksController extends Controller
         
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
+        
+        $task->user_id = $request->user_id;
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();

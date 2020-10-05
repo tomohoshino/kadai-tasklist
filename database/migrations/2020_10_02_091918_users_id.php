@@ -15,7 +15,7 @@ class UsersId extends Migration
     {
          Schema::table('tasks', function (Blueprint $table) {
             $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('tasks');
         });
     }
 
@@ -26,6 +26,6 @@ class UsersId extends Migration
      */
     public function down()
     {
-         Schema::dropColumn('tasks');
+         Schema::dropColumn('user_id');
     }
 }
