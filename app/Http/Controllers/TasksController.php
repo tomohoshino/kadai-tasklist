@@ -16,10 +16,11 @@ class TasksController extends Controller
      */
     public function index()
     {
+        /*
         if (\Auth::check() ) {
         //ここにタスクの一覧表示
-           // $tasks = Task::where('id', 'desc')->paginate(10);;
-           $tasks = Task::orderBy('id', 'desc')->paginate(10);
+           //$tasks = Task::where('id', 'desc')->paginate(10);
+          $tasks = Task::orderBy('id', 'desc')->paginate(10);
          return view('tasks.index', [
             'tasks' => $tasks,
          ]);
@@ -27,6 +28,25 @@ class TasksController extends Controller
         } else {
              return view('welcome');
         }
+        */
+          $data = [];
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+             return view('tasks.index', $data);
+        } else {
+             return view('welcome');
+        }
+
+        // Welcomeビューでそれらを表示
+       
     }
     
     /**
