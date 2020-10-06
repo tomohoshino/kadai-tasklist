@@ -109,10 +109,7 @@ class TasksController extends Controller
                 'task' => $task,
              ]);
         } else {
-            $tasks = Task::orderBy('id', 'desc')->paginate(10);
-            return view('tasks.index', [
-            'tasks' => $tasks,
-            ]);
+           return redirect('/');
         }
     }
 
@@ -134,10 +131,7 @@ class TasksController extends Controller
              
          } else {
              //課題修正
-            $tasks = Task::orderBy('id', 'desc')->paginate(10);
-            return view('tasks.index', [
-            'tasks' => $tasks,
-            ]);
+           return redirect('/');
          }
     }
 
@@ -179,7 +173,14 @@ class TasksController extends Controller
     {
     
         $task = Task::findOrFail($id);
-        $task->delete();
+       
+         
+         if (\Auth::id() === $task->user_id) { 
+        // メッセージ編集ビューでそれを表示
+             $task->delete();
+             return redirect('/');
+             
+         } 
 
         // トップページへリダイレクトさせる
         return redirect('/');
